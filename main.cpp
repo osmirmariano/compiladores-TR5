@@ -35,6 +35,7 @@ int main(int argc, char const *argv[]){
                 cin.ignore();
                 getline (cin, entrada);
                 cout << "---------------------------------------------------" << endl;
+                entrada += "$";
                 sintatico->analisandoEntrada(entrada);
                 cout << "---------------------------------------------------" << endl;
                 break;
