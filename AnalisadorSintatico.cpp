@@ -6,7 +6,8 @@ using namespace std;
 
 class AnalisadorSintatico{
       public:
-            string terminais[5] = {"E", "E'", "T", "T'", "F"};
+            //Os que seria E' substitui por A e os que seria T' substitui por B
+            string terminais[5] = {"E", "A", "T", "B", "F"};
 	      string variaveis[6] = {"id", "+", "*", "(", ")", "$"};
 	      string tabela[5][6];
 
@@ -18,30 +19,30 @@ class AnalisadorSintatico{
 
 		void definindoTabela(){
 			int x, y;
-			tabela[0][0] = {"TE'"};
+			tabela[0][0] = {"TA"};
                   tabela[0][1] = {" "};
                   tabela[0][2] = {" "};
-                  tabela[0][3] = {"TE'"};
+                  tabela[0][3] = {"TA"};
                   tabela[0][4] = {" "};
                   tabela[0][5] = {" "};
 
                   tabela[1][0] = {" "};
-                  tabela[1][1] = {"+TE'"};
+                  tabela[1][1] = {"+TA"};
                   tabela[1][2] = {" "};
                   tabela[1][3] = {" "};
                   tabela[1][4] = {"&"};
                   tabela[1][5] = {"&"};
 
-                  tabela[2][0] = {"FT'"};
+                  tabela[2][0] = {"FB"};
                   tabela[2][1] = {" "};
                   tabela[2][2] = {" "};
-                  tabela[2][3] = {"FT'"};
+                  tabela[2][3] = {"FB"};
                   tabela[2][4] = {" "};
                   tabela[2][5] = {" "};
 
                   tabela[3][0] = {" "};
                   tabela[3][1] = {"&"};
-                  tabela[3][2] = {"*FT'"};
+                  tabela[3][2] = {"*FB"};
                   tabela[3][3] = {" "};
                   tabela[3][4] = {"&"};
                   tabela[3][5] = {"&"};
@@ -73,25 +74,45 @@ class AnalisadorSintatico{
 
 		void analisandoEntrada(string entrada){
 			stack<string> pilha;
-			int x, i;
-                  vector<string> vetor;
-                  string aux= "", aux2="";
-			pilha.push("$");
-			pilha.push(terminais[0]);
+			int x, y, i, z = 0;
+                  vector<string> novoVetor;
+                  string aux = "", aux2 = "";
 
-                  for(i=0; i<entrada.length();i++){
+                  for( i = 0; i < entrada.length(); i++){
                         if(isalnum(entrada[i])){ //verifica se é alfanumérico
                               aux += entrada[i];
                         }else{
                               aux2 = entrada[i];
-                              vetor.push_back(aux);
-                              vetor.push_back(aux2);
+                              novoVetor.push_back(aux);
+                              novoVetor.push_back(aux2);
                               aux.clear();
                         }
                   }
 
-                  for(i=0; i<vetor.size();i++){
-                        cout<<"V:"<<vetor[i]<<endl;
+			pilha.push("$");
+			pilha.push(terminais[0]);
+                  cout << "TAMANHO: " << pilha.size() << endl;
+                  string quebra, value;
+                  while(pilha.top() != variaveis[y]){
+                        for(x = 0; x < 5; x++){
+                              for(y = 0; y < 6; y++){
+                                    if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[z]){
+                                          if(tabela[x][y] != " "){
+                                                pilha.pop();
+                                                quebra = tabela[x][y];
+                                                for(int b =  quebra.length(); b > 0; b++){
+                                                      value = quebra[b];
+                                                      pilha.push(value);
+                                                }
+                                          }
+
+
+                                    }
+                              }
+                              z++;
+                        }
                   }
-		}
+
+
+		};
 };
