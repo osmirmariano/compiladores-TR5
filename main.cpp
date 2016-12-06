@@ -4,13 +4,14 @@ using namespace std;
 
 int main(int argc, char const *argv[]){
 	int op;
+    string entrada;
 	AnalisadorSintatico *sintatico =  new AnalisadorSintatico();
 
 	do{
         cout << "---------------------------------------------------" << endl;
         cout << "\t MENU DE OPÇÃO" << endl;
         cout << "---------------------------------------------------" << endl;
-        cout << " 1 -- CARREGAR ARQUIVO" << endl;
+        cout << " 1 -- DEFINIR TABELA" << endl;
         cout << " 2 -- ENTRADA CÓDIGO FONTE" << endl;
         cout << " 0 -- SAIR" << endl;
         cout << "---------------------------------------------------" << endl;
@@ -21,8 +22,9 @@ int main(int argc, char const *argv[]){
         switch(op){
             case 1:
                 cout << "---------------------------------------------------" << endl;
-                cout << "\t ARQUIVO CARREGADO" << endl;
+                cout << "\t DEFININDO A TABELA" << endl;
                 cout << "---------------------------------------------------" << endl;
+                sintatico->definindoTabela();
                 break;
 
             case 2:
@@ -33,7 +35,7 @@ int main(int argc, char const *argv[]){
                 cin.ignore();
                 getline (cin, entrada);
                 cout << "---------------------------------------------------" << endl;
-                
+                sintatico->analisandoEntrada(entrada);
                 cout << "---------------------------------------------------" << endl;
                 break;
 
