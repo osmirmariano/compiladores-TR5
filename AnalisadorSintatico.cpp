@@ -6,6 +6,8 @@ using namespace std;
 
 class AnalisadorSintatico{
       public:
+            stack<string> pilha;      
+      public:
             //Os que seria E' substitui por A e os que seria T' substitui por B
             string terminais[5] = {"E", "E'", "T", "T'", "F"};
 	      string variaveis[6] = {"id", "+", "*", "(", ")", "$"};
@@ -58,7 +60,7 @@ class AnalisadorSintatico{
 			cout << "\t TABELA SINTÁTICA" << endl;
 			cout << "-----------------------------------------------------" << endl;
 			cout << "TERMINAIS";
-			for(x = 0; x < 5; x++){
+			for(x = 0; x < 6; x++){
 				cout << "  |  " << variaveis[x];
 			}
 			cout << endl << "-----------------------------------------------------" << endl;
@@ -73,10 +75,10 @@ class AnalisadorSintatico{
             };
 
 		void analisandoEntrada(string entrada){
-			stack<string> pilha;
+			
 			int x, y, i, z = 0;
-                  vector<string> novoVetor;
-                  string aux = "", aux2 = "";
+                  vector<string> novoVetor, valores;
+                  string aux = "", aux2 = "",  palavra = "", cif;
 
                   for( i = 0; i < entrada.length(); i++){
                         if(isalnum(entrada[i])){ //verifica se é alfanumérico
@@ -88,32 +90,64 @@ class AnalisadorSintatico{
                               aux.clear();
                         }
                   }
-
-			pilha.push("$");
-			pilha.push(terminais[0]);
-                  cout << "TAMANHO: " << pilha.size() << endl;
+                  cif = "$";
+			pilha.push(cif);
+			//pilha.push(terminais[0]);
+                  imprimirResultado();
                   string quebra, value;
-                  while(pilha.top() != variaveis[y]){
+                  int b;
+                  vector<string> resultado;
+                  for(b = 0; b < novoVetor.size(); b++){
                         for(x = 0; x < 5; x++){
                               for(y = 0; y < 6; y++){
-                                    if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[z]){
-                                          cout << ""
-                                          if(tabela[x][y] != " "){
+                                    if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
+                                          cout << " " << tabela[x][y] << endl;
+                                          if(pilha.top() != novoVetor[b]){
                                                 pilha.pop();
-                                                quebra = tabela[x][y];
-                                                for(int b =  quebra.length(); b > 0; b++){
-                                                      value = quebra[b];
-                                                      pilha.push(value);
-                                                }
+                                                palavra = tabela[x][y];  
+                                                tratamentoVariaveis(palavra);
                                           }
-
+                                          else{
+                                                pilha.pop();
+                                                cout << "É VÁLIDO" << endl;
+                                          }
 
                                     }
                               }
-                              z++;
                         }
                   }
-
+                  //imprimirResultado();
 
 		};
+
+            void imprimirResultado(){
+                  int x;
+                  cout << "TAMANHO: " << pilha.size() << endl;
+                  for(x = 0; x < pilha.size(); x++){
+                        cout << " PILHA: " << pilha.top() << " " << endl;
+                  }
+            };
+
+            void tratamentoVariaveis(string palavra){
+                  string usa1="", usa2 ="";
+                  int i;
+                  for(i = palavra.length(); i > 0; i--){
+                        //cout << "PALAVRA: " << palavra[i-1] << endl;
+                        if(palavra[i] != isalnum(palavra[i])){
+                              usa1 = palavra[i-1];
+                              pilha.push(usa1);
+                              //cout << "VALOR 1: " << usa1 << endl;
+                              usa1.clear();
+                        }
+                        else{
+                              usa1 += palavra[i-2];
+                              usa1 += palavra[i-1];
+                              //cout << "VALOR 2: " << usa1 << endl;
+                              pilha.push(usa1);
+                              usa1.clear();
+                              i--;
+                        }
+                        //imprimirResultado();
+                  }
+            };
 };
