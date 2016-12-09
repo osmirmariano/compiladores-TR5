@@ -86,26 +86,33 @@ class AnalisadorSintatico{
 
                   pilha.push("$");
                   pilha.push(terminais[0]);
-
-                  //imprimirResultado();
                   string quebra, value;
                   int b;
                   vector<string> resultado;
                   for(b = 0; b < novoVetor.size(); b++){
                         for(x = 0; x < 5; x++){
                               for(y = 0; y < 6; y++){
-                                    if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
-                                          cout << " " << tabela[x][y] << endl;
-                                          if(pilha.top() != novoVetor[b]){
-                                                pilha.pop();
-                                                palavra = tabela[x][y];  
-                                                tratamentoVariaveis(palavra);
-                                          }
-                                          else{
-                                                pilha.pop();
-                                                cout << "É VÁLIDO" << endl;
-                                          }
+                                    //Corresponde ao primeiro caso do algoritmo presente no slide
+                                    if(pilha.top() == novoVetor[b] == "$"){
+                                          cout << "ANÁLISE SINTÁTICA VÁLIDA" << endl;
+                                          b = novoVetor.size();
+                                          x = 5;
+                                          y = 6;
+                                    }
+                                    else{
+                                          if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
+                                                cout << " " << tabela[x][y] << endl;
+                                                if(pilha.top() != novoVetor[b]){
+                                                      pilha.pop();
+                                                      palavra = tabela[x][y];  
+                                                      tratamentoVariaveis(palavra);
+                                                }
+                                                else{
+                                                      pilha.pop();
+                                                      cout << "É VÁLIDO" << endl;
+                                                }
 
+                                          }
                                     }
                               }
                         }
