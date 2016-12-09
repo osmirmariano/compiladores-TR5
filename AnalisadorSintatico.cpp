@@ -6,7 +6,7 @@ using namespace std;
 
 class AnalisadorSintatico{
       public:
-            stack<string> pilha;      
+            stack<string> pilha;    
       public:
             //Os que seria E' substitui por A e os que seria T' substitui por B
             string terminais[5] = {"E", "E'", "T", "T'", "F"};
@@ -74,26 +74,20 @@ class AnalisadorSintatico{
 			}
             };
 
+            
+            
+
 		void analisandoEntrada(string entrada){
-			
 			int x, y, i, z = 0;
                   vector<string> novoVetor, valores;
-                  string aux = "", aux2 = "",  palavra = "", cif;
+                  string palavra = "";
 
-                  for( i = 0; i < entrada.length(); i++){
-                        if(isalnum(entrada[i])){ //verifica se é alfanumérico
-                              aux += entrada[i];
-                        }else{
-                              aux2 = entrada[i];
-                              novoVetor.push_back(aux);
-                              novoVetor.push_back(aux2);
-                              aux.clear();
-                        }
-                  }
-                  cif = "$";
-			pilha.push(cif);
-			//pilha.push(terminais[0]);
-                  imprimirResultado();
+                  novoVetor = tratamentoEntrada(entrada);
+
+                  pilha.push("$");
+                  pilha.push(terminais[0]);
+
+                  //imprimirResultado();
                   string quebra, value;
                   int b;
                   vector<string> resultado;
@@ -116,16 +110,28 @@ class AnalisadorSintatico{
                               }
                         }
                   }
-                  //imprimirResultado();
+                  imprimirResultado();
 
 		};
 
-            void imprimirResultado(){
-                  int x;
-                  cout << "TAMANHO: " << pilha.size() << endl;
-                  for(x = 0; x < pilha.size(); x++){
-                        cout << " PILHA: " << pilha.top() << " " << endl;
+            
+
+            vector<string> tratamentoEntrada(string entrada){
+                  vector<string> novoVetor;
+                  string aux = "", aux2 = "";
+                  int i;
+                  for( i = 0; i < entrada.length(); i++){
+                        if(isalnum(entrada[i])){ //verifica se é alfanumérico
+                              aux += entrada[i];
+                        }
+                        else{
+                              aux2 = entrada[i];
+                              novoVetor.push_back(aux);
+                              novoVetor.push_back(aux2);
+                              aux.clear();
+                        }
                   }
+                  return novoVetor;
             };
 
             void tratamentoVariaveis(string palavra){
@@ -148,6 +154,14 @@ class AnalisadorSintatico{
                               i--;
                         }
                         //imprimirResultado();
+                  }
+            };
+
+            void imprimirResultado(){
+                  cout << "TAMANHO: " << pilha.size() << endl;
+                  while(!pilha.empty()){
+                        cout << " PILHA: " << pilha.top() << " " << endl;
+                        pilha.pop();
                   }
             };
 };
