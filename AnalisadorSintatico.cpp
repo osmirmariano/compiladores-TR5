@@ -93,25 +93,32 @@ class AnalisadorSintatico{
                         for(x = 0; x < 5; x++){
                               for(y = 0; y < 6; y++){
                                     //Corresponde ao primeiro caso do algoritmo presente no slide
-                                    if(pilha.top() == novoVetor[b] == "$"){
+                                    if(pilha.top() == "$" && novoVetor[b] == "$"){
                                           cout << "ANÁLISE SINTÁTICA VÁLIDA" << endl;
                                           b = novoVetor.size();
                                           x = 5;
                                           y = 6;
                                     }
                                     else{
-                                          if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
-                                                cout << " " << tabela[x][y] << endl;
-                                                if(pilha.top() != novoVetor[b]){
-                                                      pilha.pop();
-                                                      palavra = tabela[x][y];  
-                                                      tratamentoVariaveis(palavra);
-                                                }
-                                                else{
-                                                      pilha.pop();
-                                                      cout << "É VÁLIDO" << endl;
-                                                }
+                                          //Para verificar se pilha.top() é variável
+                                          if(){
 
+                                          }
+                                          else{
+                                                //Para verificar caso o pilha.topo() != $ e novoVetor[] != $
+                                                if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
+                                                      cout << " " << tabela[x][y] << endl;
+                                                      if(pilha.top() != novoVetor[b]){
+                                                            pilha.pop();
+                                                            palavra = tabela[x][y];  
+                                                            tratamentoVariaveis(palavra);
+                                                      }
+                                                      else{
+                                                            pilha.pop();
+                                                            cout << "É VÁLIDO" << endl;
+                                                      }
+
+                                                } 
                                           }
                                     }
                               }
