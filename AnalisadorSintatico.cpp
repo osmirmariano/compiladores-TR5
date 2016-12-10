@@ -1,7 +1,7 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <stack>
+#include <string>
 using namespace std;
 
 class AnalisadorSintatico{
@@ -78,18 +78,18 @@ class AnalisadorSintatico{
             
 
 		void analisandoEntrada(string entrada){
-			int x, y, i, z = 0, cont = 0;
-                  vector<string> novoVetor, valores;
-                  string palavra = "";
+			int x, y, i, z = 0, b = 0, cont = 0;
+                  string quebra, value;
+                  vector<string> novoVetor;
+                  vector<string> resultado;
 
                   novoVetor = tratamentoEntrada(entrada);
                   pilha.push("$");
                   pilha.push(terminais[0]);
+
                   if(terminais[0] == " ")
                         pilha.pop();
-                  string quebra, value;
-                  int b;
-                  vector<string> resultado;
+                  //Primeiro for corresponde a lista de tokens de entradas fornecido pelo usuário
                   for(b = 0; b < novoVetor.size(); b++){
                         cout << " VETOR: <" << novoVetor[b] << "> "<< endl;
                         cout << "--------------------------------------------------------" << endl;
@@ -97,41 +97,37 @@ class AnalisadorSintatico{
                               for(y = 0; y < 6; y++){
                                     //Corresponde ao primeiro caso do algoritmo presente no slide
                                     if(pilha.top() == "$" && novoVetor[b] == "$"){
-                                          cout << " ANÁLISE SINTÁTICA VÁLIDA" << endl;
+                                          cout << " \tANÁLISE SINTÁTICA VÁLIDA" << endl;
                                           cout << "--------------------------------------------------------" << endl;
-                                          b = novoVetor.size();
                                           x = 5;
                                           y = 6;
                                     }
                                     else{
                                           //Para verificar caso o pilha.topo() != $ e novoVetor[] != $
-                                          if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
+                                          if((pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]) || pilha.top() == "&"){
                                                 cout << " TABELA: " << tabela[x][y] << endl;
+                                                cout << " PILHA TOPO: " << pilha.top() << endl;
                                                 cout << "--------------------------------------------------------" << endl;
                                                 if(pilha.top() != novoVetor[b]){
                                                       pilha.pop();
-                                                      palavra = tabela[x][y];  
-                                                      tratamentoVariaveis(palavra);
+                                                      tratamentoVariaveis(tabela[x][y]);
+                                                      cout << " PILHA TOPO 1: " << pilha.top() << endl;
                                                 }
                                                 else{
                                                       pilha.pop();
-                                                      cout << " É VÁLIDO" << endl;
+                                                      cout << " \tANÁLISE SINTÁTICA VÁLIDA" << endl;
                                                       cout << "--------------------------------------------------------" << endl;
                                                 }
                                           } 
 
                                           cout << "--------------------------------------------------------" << endl;
-                                          
                                           cout << " TOPO: " << pilha.top() << endl;
-                                          //Ele reconhece que pilha.top() == &
-                                          //Nunca reconhece sendo que nos casos verdadeiro ele ignora
-                                          if(pilha.top() == "&")
-                                                cout << "OI TESTE" << endl;
-                                          //Raiva
-                                          if(pilha.top() == novoVetor[x] || pilha.top() == "&"){//Não consegui identificar que pilha.top() == "&", sendo que é verdade
+                                          if(pilha.top() == novoVetor[b]){//Não consegui identificar que pilha.top() == "&", sendo que é verdade
                                                 cout << " ELEMENTO VAI SER DESEMPILHADO: " << pilha.top() << endl;
                                                 cout << "--------------------------------------------------------" << endl;
                                                 pilha.pop();
+                                                x = 5;
+                                                y = 6;
                                                 cout << " NOVO ELEMENTO TOP: " << pilha.top() << endl;
                                                 cout << "--------------------------------------------------------" << endl;
                                           }
@@ -139,7 +135,7 @@ class AnalisadorSintatico{
                               }
                         }
                   }
-                  imprimirResultado();
+                  //imprimirResultado();
 		};
 
             
@@ -163,32 +159,42 @@ class AnalisadorSintatico{
             };
 
             void tratamentoVariaveis(string palavra){
-                  string usa1="", usa2 ="";
-                  int i;
-                  for(i = palavra.length(); i > 0; i--){
-                        //cout << "PALAVRA: " << palavra[i-1] << endl;
-                        if(palavra[i] != isalnum(palavra[i])){
-                              usa1 = palavra[i-1];
-                              pilha.push(usa1);
-                              //cout << "VALOR 1: " << usa1 << endl;
-                              usa1.clear();
+                  string divisao = "";
+                  int x;
+                  for(x = palavra.length(); x > 0; x--){
+                        if(palavra[x] != isalnum(palavra[x])){
+                              divisao = palavra[x-1];
+                              if(divisao == "& ")
+                                    x = palavra.length();
+                              else{
+                                    pilha.push(divisao);
+                                    divisao.clear();
+                              }
                         }
                         else{
-                              usa1 += palavra[i-2];
-                              usa1 += palavra[i-1];
-                              //cout << "VALOR 2: " << usa1 << endl;
-                              pilha.push(usa1);
-                              usa1.clear();
-                              i--;
+                              divisao += palavra[x-2];
+                              if((int) divisao[0] == 0){//if para identificar se não tem nada
+                                    divisao.clear();
+                              }
+                              divisao += palavra[x-1];
+                              if(divisao == "&")
+                                    x = palavra.length();
+                              else{
+                                    pilha.push(divisao);
+                                    divisao.clear();
+                                    x--;
+                              }
                         }
-                        //imprimirResultado();
                   }
+                  imprimirResultado();
             };
 
             void imprimirResultado(){
-                  while(!pilha.empty()){
-                        cout << " PILHA: " << pilha.top() << " " << endl;
-                        pilha.pop();
+                  stack<string> printando;
+                  printando = pilha;
+                  while(!printando.empty()){
+                        cout << " PILHA: " << printando.top() << " " << endl;
+                        printando.pop();
                   }
             };
 };
