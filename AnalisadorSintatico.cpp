@@ -78,7 +78,7 @@ class AnalisadorSintatico{
             
 
 		void analisandoEntrada(string entrada){
-			int x, y, i, z = 0, b = 0, cont = 0;
+			int x, y, i, z = 0, b, cont = 0, contador;
                   string quebra, value;
                   vector<string> novoVetor;
                   vector<string> resultado;
@@ -97,45 +97,56 @@ class AnalisadorSintatico{
                               for(y = 0; y < 6; y++){
                                     //Corresponde ao primeiro caso do algoritmo presente no slide
                                     if(pilha.top() == "$" && novoVetor[b] == "$"){
-                                          cout << " \tANÁLISE SINTÁTICA VÁLIDA" << endl;
+                                          /*cout << " \tANÁLISE SINTÁTICA VÁLIDA" << endl;
                                           cout << "--------------------------------------------------------" << endl;
-                                          x = 5;
+                                          */x = 5;
                                           y = 6;
                                     }
                                     else{
+                                          cout << "TERMINAIS: " << terminais[x] << endl;
                                           //Para verificar caso o pilha.topo() != $ e novoVetor[] != $
-                                          if((pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]) || pilha.top() == "&"){
+                                          if(pilha.top() == terminais[x] && variaveis[y] == novoVetor[b]){
                                                 cout << " TABELA: " << tabela[x][y] << endl;
                                                 cout << " PILHA TOPO: " << pilha.top() << endl;
+                                                cout << " VETOR: " << novoVetor[b] << endl;
                                                 cout << "--------------------------------------------------------" << endl;
+
                                                 if(pilha.top() != novoVetor[b]){
                                                       pilha.pop();
                                                       tratamentoVariaveis(tabela[x][y]);
-                                                      cout << " PILHA TOPO 1: " << pilha.top() << endl;
+                                                      x = 0;
                                                 }
                                                 else{
                                                       pilha.pop();
                                                       cout << " \tANÁLISE SINTÁTICA VÁLIDA" << endl;
                                                       cout << "--------------------------------------------------------" << endl;
                                                 }
+
                                           } 
+                                          
 
                                           cout << "--------------------------------------------------------" << endl;
                                           cout << " TOPO: " << pilha.top() << endl;
                                           if(pilha.top() == novoVetor[b]){//Não consegui identificar que pilha.top() == "&", sendo que é verdade
                                                 cout << " ELEMENTO VAI SER DESEMPILHADO: " << pilha.top() << endl;
                                                 cout << "--------------------------------------------------------" << endl;
-                                                pilha.pop();
-                                                x = 5;
-                                                y = 6;
+                                                if(pilha.top() == "$"){
+                                                     cout << " \tANÁLISE SINTÁTICA VÁLIDA" << endl;
+                                                }
+                                                else{
+                                                      pilha.pop();
+                                                      x = 5;
+                                                      y = 6; 
+                                                }
                                                 cout << " NOVO ELEMENTO TOP: " << pilha.top() << endl;
                                                 cout << "--------------------------------------------------------" << endl;
+                                                //resultado.push_back(novoVetor[b]);
                                           }
                                     }
+                                    imprimirResultado();
                               }
                         }
                   }
-                  //imprimirResultado();
 		};
 
             
@@ -173,7 +184,8 @@ class AnalisadorSintatico{
                         }
                         else{
                               divisao += palavra[x-2];
-                              if((int) divisao[0] == 0){//if para identificar se não tem nada
+                              //if para identificar se não tem nada
+                              if((int) divisao[0] == 0){
                                     divisao.clear();
                               }
                               divisao += palavra[x-1];
@@ -186,7 +198,7 @@ class AnalisadorSintatico{
                               }
                         }
                   }
-                  imprimirResultado();
+                  //imprimirResultado();
             };
 
             void imprimirResultado(){
