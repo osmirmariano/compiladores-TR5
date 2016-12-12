@@ -8,9 +8,9 @@ class AnalisadorSintatico{
       public:
             stack<string> pilha;    
             string terminais[5] = {"E", "E'", "T", "T'", "F"};
-	      string variaveis[6] = {"id", "+", "*", "(", ")", "$"};//
+	      string variaveis[6] = {"id", "+", "*", "(", ")", "$"};
 	      string tabela[5][6];
-
+            
 	public:
 		AnalisadorSintatico(){
 			void definindoTabela();
@@ -81,6 +81,7 @@ class AnalisadorSintatico{
             /*-----------------FUNÇÃO PARA ANALISAR A ENTRADA E VERIFICAR SE É VÁLIDA----------------------*/
 		void analisandoEntrada(string entrada){
 			int x, y, i, z = 0, b, cont = 0, contador = 0;
+                  int armazena = 0;
                   string value;
                   vector<string> novoVetor;
                   vector<string> resultado;
@@ -114,18 +115,18 @@ class AnalisadorSintatico{
                                                             pilha.pop();
                                                             tratamentoVariaveis(tabela[x][y]);     
                                                       }
-                                                      x = 0;
+                                                      x = 0; 
                                                 }
                                                 else{
                                                       pilha.pop();
-                                                      cout << " \tANÁLISE SINTÁTICAMENTE VÁLIDA" << endl;
+                                                      //cout << " \tANÁLISE SINTATICAMENTE VÁLIDA" << endl;
                                                 }
-                                                cont++;
+                                                //cont++;
                                           } 
                                           
                                           if(pilha.top() == novoVetor[b]){//Não consegui identificar que pilha.top() == "&", sendo que é verdade
-                                                if(pilha.top() == "$"){
-                                                     cout << " \tANÁLISE SINTÁTICAMENTE VÁLIDA" << endl;
+                                                if(pilha.top() == "$" && novoVetor[b] == "$"){
+                                                     cout << " \tANÁLISE SINTATICAMENTE VÁLIDA" << endl;
                                                 }
                                                 else{
                                                       pilha.pop();
@@ -139,7 +140,8 @@ class AnalisadorSintatico{
                         }
                   }
                   if(cont < novoVetor.size())
-                        cout << " \tANÁLISE SINTÁTICAMENTE INVÁLIDA" << endl;
+                        cout << " \tANÁLISE SINTATICAMENTE INVÁLIDA" << endl;
+
 		};
 
             /*----------------FUNÇÃO PARA FAZER O TRATAMENTO DA ENTRADA PARA APLICAR-----------------*/
@@ -153,7 +155,8 @@ class AnalisadorSintatico{
                         }
                         else{
                               aux2 = entrada[i];
-                              novoVetor.push_back(aux);
+                              if((int) aux[0] !=  0)
+                                    novoVetor.push_back(aux);
                               novoVetor.push_back(aux2);
                               aux.clear();
                         }
