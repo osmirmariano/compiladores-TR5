@@ -7,7 +7,6 @@ using namespace std;
 class AnalisadorSintatico{
       public:
             stack<string> pilha;    
-      public:
             string terminais[5] = {"E", "E'", "T", "T'", "F"};
 	      string variaveis[6] = {"id", "+", "*", "(", ")", "$"};//
 	      string tabela[5][6];
@@ -15,9 +14,15 @@ class AnalisadorSintatico{
 	public:
 		AnalisadorSintatico(){
 			void definindoTabela();
+                  void analisandoEntrada(string entrada);
+                  vector<string> tratamentoEntrada(string entrada);
+                  void tratamentoEspecial(string palavra);
+                  void tratamentoVariaveis(string palavra);
+                  void imprimirResultado();
 		};
-		~AnalisadorSintatico();
 
+		~AnalisadorSintatico();
+            /*---------------------FUNÇÃO PARA DEFINIR A TABELA SINTÁTICA--------------------------*/
 		void definindoTabela(){
 			int x, y;
 			tabela[0][0] = {"TE'"};
@@ -73,8 +78,7 @@ class AnalisadorSintatico{
 			}
             };
 
-            
-
+            /*-----------------FUNÇÃO PARA ANALISAR A ENTRADA E VERIFICAR SE É VÁLIDA----------------------*/
 		void analisandoEntrada(string entrada){
 			int x, y, i, z = 0, b, cont = 0, contador = 0;
                   string value;
@@ -115,7 +119,6 @@ class AnalisadorSintatico{
                                                 else{
                                                       pilha.pop();
                                                       cout << " \tANÁLISE SINTÁTICAMENTE VÁLIDA" << endl;
-                                                      cout << "--------------------------------------------------------" << endl;
                                                 }
                                                 cont++;
                                           } 
@@ -139,8 +142,7 @@ class AnalisadorSintatico{
                         cout << " \tANÁLISE SINTÁTICAMENTE INVÁLIDA" << endl;
 		};
 
-            
-
+            /*----------------FUNÇÃO PARA FAZER O TRATAMENTO DA ENTRADA PARA APLICAR-----------------*/
             vector<string> tratamentoEntrada(string entrada){
                   vector<string> novoVetor;
                   string aux = "", aux2 = "";
@@ -159,6 +161,7 @@ class AnalisadorSintatico{
                   return novoVetor;
             };
 
+            /*-------------------FUNÇÃO PARA FAZER TRATAMENTO NO CASO ESPECIAL DE (X)-------------------*/
             void tratamentoEspecial(string palavra){
                   int x;
                   string recebe;
@@ -170,6 +173,7 @@ class AnalisadorSintatico{
                   }
             };
 
+            /*---------------------FUNÇÃO PARA FAZER O TRATAMENTO DAS VARIAVEIS--------------------------*/
             void tratamentoVariaveis(string palavra){
                   string divisao = "";
                   int x;
@@ -200,7 +204,7 @@ class AnalisadorSintatico{
                         }
                   }
             };
-
+            /*--------------------------FUNÇÃO PARA PRINTAR A PILHA---------------------------------*/
             void imprimirResultado(){
                   stack<string> printando;
                   printando = pilha;
