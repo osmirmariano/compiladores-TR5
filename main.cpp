@@ -50,6 +50,7 @@ int main(int argc, char const *argv[]){
         cout << endl << "  PARA VOLTAR AO MENU PRESSIONE ENTER" << endl;
         cin.ignore().get();//Comando para Pausa no terminal
         cout << "\e[H\e[2J";//Comando para limpar a tela
+        
     }while(op != 0);
 	return 0;
 }

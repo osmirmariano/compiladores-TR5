@@ -10,7 +10,6 @@ class AnalisadorSintatico{
             string terminais[5] = {"E", "E'", "T", "T'", "F"};
 	      string variaveis[6] = {"id", "+", "*", "(", ")", "$"};
 	      string tabela[5][6];
-            
 	public:
 		AnalisadorSintatico(){
 			void definindoTabela();
@@ -20,8 +19,8 @@ class AnalisadorSintatico{
                   void tratamentoVariaveis(string palavra);
                   void imprimirResultado();
 		};
-
 		~AnalisadorSintatico();
+            
             /*---------------------FUNÇÃO PARA DEFINIR A TABELA SINTÁTICA--------------------------*/
 		void definindoTabela(){
 			int x, y;
