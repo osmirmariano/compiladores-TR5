@@ -41,7 +41,7 @@ int main(int argc, char const *argv[]){
                 break;
 
             case 0:
-                cout << "\tAPLICAÇÃO ENCERRADA COM SUCESSO!" << endl << endl;
+                cout << "\tAPLICAÇÃO ENCERRADA COM SUCESSO.!" << endl << endl;
                 break;
 
             default:
